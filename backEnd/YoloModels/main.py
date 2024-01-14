@@ -9,7 +9,7 @@ import cv2
 import os
 import pandas as pd
 
-# what
+# hey sai 
 class ImageData:
     def __init__(self,content: str | BytesIO,
                  model:str|Path='yolov8n.pt',
