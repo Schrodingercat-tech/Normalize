@@ -10,7 +10,7 @@ import numpy as np
 from ultralytics import YOLO
 
 
-#this file is updated
+#
 app = FastAPI()
 
 class yoloImage(BaseModel): # i tried this base model method and this is not working unless i explicitly use upload files seperatly 
