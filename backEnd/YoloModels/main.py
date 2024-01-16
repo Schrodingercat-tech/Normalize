@@ -8,6 +8,7 @@ from ultralytics import YOLO
 import cv2
 import os
 import pandas as pd
+from collections import defaultdict
 
 # hey sai 
 class ImageData:
