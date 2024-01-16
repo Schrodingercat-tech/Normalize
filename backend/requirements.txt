@@ -1,0 +1,10 @@
+# requirements.txt
+
+tensorflow>=2.7.0 # TensorFlow for machine learning
+opencv-python>=4.5.4.60 # OpenCV for computer vision
+# FastAPI for building APIs
+fastapi>=0.68.1
+numpy>=1.21.4 # NumPy for numerical operations
+# SciPy for scientific and technical computing
+scipy>=1.7.3
+ultralytics>=8.0.215 # yolov8 

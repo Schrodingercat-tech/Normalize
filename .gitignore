@@ -1,0 +1,3 @@
+*.pt
+backend/YoloModels/__pycache__
+
