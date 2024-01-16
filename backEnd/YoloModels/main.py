@@ -119,6 +119,24 @@ class ImageData:
             return {
                 'response' : 'mask value is null cant fetch csv'
             }
+
+    '''
+    NOTE : I strongly recommend not use imgCrop function since it require lot of computation if the user base increases this wont be very responsive
+    my recommendation would be get the csv data of crop dimentions and use css in react or crop the images accordingly that will  be very responsive 
+    and saves lot of resources on end point
+    '''
+    @property 
+    def imgCrop(self): 
+        images = defaultdict(list)
+        model = self.predict[0]
+        names = self.objNames
+        boxes = model.boxes.data.numpy()
+        objs,cols = boxes.shape
+        for obj in range(objs):
+            xmin,ymin,xmax,ymax,confi,clas = boxes
+            crop = self.isImageFile[1].crop((xmin,ymin,xmax,ymax))
+            images[names[clas]].append(crop)
+        return images
         
  
 class responsePayload(ImageData):
