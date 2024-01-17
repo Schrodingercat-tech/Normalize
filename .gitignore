@@ -2,3 +2,5 @@
 backend/YoloModels/__pycache__
 backend/assects
 frontend\node_modules
+*.pytest_cache
+*.vscode

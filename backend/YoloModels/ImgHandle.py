@@ -9,7 +9,6 @@ import cv2
 import os
 import pandas as pd# Imports the pandas library for working with data frames
 
-
 class YoloPath:
     """Initializes YoloPath with default vision task and trained variant.
     

@@ -26,7 +26,7 @@ async def send_img(task:str='det',variant:str='n', file: UploadFile = File(...))
     model = YoloPath(task,variant).getpath
     return responsePayload(BytesIO(contents),model).send_processed_img
 
-@app.post('/detdata')
+@app.post('/detData')
 async def array(task:str='det',
                 variant:str='n',
                 file:UploadFile=File(...)):

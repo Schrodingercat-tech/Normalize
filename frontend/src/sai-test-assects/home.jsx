@@ -2,8 +2,6 @@ import { useState,useEffect} from 'react';
 import Papa from 'papaparse'; 
 
 const img = '/public/images/girl.jpg'
-
-// api.js
 const apiUrl = 'http://127.0.0.1:8000/';
 
 export const FetchData = async ({ url = apiUrl }) => {
@@ -32,7 +30,7 @@ export function Wish(apiUrl) {
 
   return (
     <div>
-      <h2>Ftech Data from fast api</h2>
+      <h2>Fetch Data from fast api</h2>
       <button onClick={handleButtonClick}>Fetch Data</button>
       {data ? (
         <p>{data.hi}</p>  // Access the 'hi' property from the response
