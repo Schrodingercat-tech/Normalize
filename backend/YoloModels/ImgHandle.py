@@ -7,9 +7,17 @@ from io import BytesIO,StringIO
 from ultralytics import YOLO
 import cv2
 import os
-import pandas as pd
+import pandas as pd# Imports the pandas library for working with data frames
+
 
 class YoloPath:
+    """Initializes YoloPath with default vision task and trained variant.
+    
+    Args:
+      visionTask (str): The vision task, default 'det' for detection.
+      trainedVarient (str): The trained YOLO variant, default 'n' for nano.
+    
+    """
     def __init__(self,
                  visionTask: str = 'det', 
                  trainedVarient: str = 'n') -> None:
@@ -29,6 +37,13 @@ class YoloPath:
         else : return f'yolov8{varient}-{task}.pt'
 
 class ImageData:
+    """Initializes ImageData with image content and YOLO model.
+    
+    Args:
+      content (str|BytesIO): Path to image file or image binary data.
+      model (str|Path): Path to YOLO model file or name of pretrained model variant (default 'yolov8n.pt').
+      task (str): YOLO task like 'det', 'seg', etc.
+    """
     def __init__(self,content: str | BytesIO,
                  model:str|Path='yolov8n.pt',
                  task=None) -> None:
