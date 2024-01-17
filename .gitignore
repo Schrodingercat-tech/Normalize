@@ -1,3 +1,4 @@
 *.pt
 backend/YoloModels/__pycache__
 backend/assects
+frontend\node_modules
