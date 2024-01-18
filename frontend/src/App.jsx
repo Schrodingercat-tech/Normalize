@@ -1,8 +1,11 @@
+import { ImageCard } from "./Components/ImageCard";
+//import ImageAndTextExample from "./sai-test-assects/assects/tailwind components/card";
 function App() {
   return (
-    <>
-      <h1 className='text-3xl font-bold underline text-center'>Normalize</h1>
-    </>
+    <div className="cropped-container">
+    <h1> Normalize</h1>
+    <ImageCard />
+    </div>
   );
 }
 

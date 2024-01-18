@@ -1,3 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.cropped-image {
+    position: relative;
+    width: 100%;
+    height: auto;
+  }
+  
+  .cropped-image img{
+    position: absolute;
+    clip: rect(458.7px, 2430.1733px, 2145.0674px, 1587.0491px);
+    width: 100%;
+    height: auto;
+  }
+  
