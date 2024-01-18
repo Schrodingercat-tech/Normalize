@@ -7,15 +7,20 @@ from io import BytesIO,StringIO
 from ultralytics import YOLO
 import cv2
 import os
-import pandas as pd# Imports the pandas library for working with data frames
+import pandas as pd
 from collections import defaultdict,Counter
 
-class YoloPath:
-    """Initializes YoloPath with default vision task and trained variant.
+class YoloPath: # code update
+    """Initializes YoloPath class to handle YOLOv8 model paths.
     
-    Args:
-      visionTask (str): The vision task, default 'det' for detection.
-      trainedVarient (str): The trained YOLO variant, default 'n' for nano.
+    The YoloPath class provides methods to generate the path to different 
+    YOLOv8 models based on the task (detection, segmentation, etc.) and
+    variant (nano, small, etc.). This allows easy initialization of YOLOv8
+    models by just specifying the task and variant separately.
+    
+    Attributes:
+        task (str): The vision task (detection, segmentation, etc). Defaults to 'det'.
+        variant (str): The model variant (nano, small, etc.). Defaults to 'n'.
     
     """
     def __init__(self,
@@ -26,24 +31,15 @@ class YoloPath:
 
     @property
     def getpath(self):
-        '''
-        NOTE - we have various yolov8 models for 
-        det(detection), seg(segmentation), cls(classification), pose(pose detection only applied for person object) and (obb)oriented bounding boxes
-        with varients like n(nano),s(small),m(medium),l(large) and x(huge)
-        this function allows us to sepcify the task and its varient seperately and it makes string that is needed to initilize the yolo model
-        '''
+        # Returns the path to the YOLOv8 model file based on the task and variant.
+        # The task and variant are converted to lowercase. 
+        # For detection, returns yolov8{variant}.pt.
+        # For other tasks, returns yolov8{variant}-{task}.pt.
         task,varient = self.task.lower(), self.varient.lower()
         if task == 'det': return (f'yolov8{varient}.pt')
         else : return f'yolov8{varient}-{task}.pt'
 
 class ImageData:
-    """Initializes ImageData with image content and YOLO model.
-    
-    Args:
-      content (str|BytesIO): Path to image file or image binary data.
-      model (str|Path): Path to YOLO model file or name of pretrained model variant (default 'yolov8n.pt').
-      task (str): YOLO task like 'det', 'seg', etc.
-    """
     def __init__(self,content: str | BytesIO,
                  model:str|Path='yolov8n.pt',
                  task=None) -> None:
@@ -52,10 +48,15 @@ class ImageData:
     
     @property
     def isImageFile(self)->bool:
-        """
-        you can explicitly pass and binary or image path in __init__,
-        if its image returns True and image content
-        if not false and none
+        """Checks if the content passed to ImageData is a valid image file.
+        
+        This method attempts to open the content as an image using PIL. If the content 
+        is a valid image file path or binary data, it will return True and the opened 
+        Image object. Otherwise it will return False and None.
+        
+        Returns:
+            bool: True if content is a valid image, False otherwise.
+            Image: The opened Image object if content is valid, None otherwise.
         """
         content = self.content
         try: 
@@ -72,9 +73,13 @@ class ImageData:
         
     @property
     def imgarr(self)->np.ndarray:
-        """
-        converts binary image or image path to an numpy array
-
+        """Converts the image content to a numpy array.
+        
+        This method checks if the content is a valid image using isImageFile. 
+        If valid, the image is converted to a numpy array and returned.
+        
+        Returns:
+            numpy.ndarray: The image content as a numpy array.
         """
         sucess, img = self.isImageFile
         if sucess:
@@ -82,9 +87,13 @@ class ImageData:
         
     @property
     def predict(self):
-        """
-        use yolo object to predict image
-        it returns yolo predict object
+        """Gets predictions from the YOLO model on the image content.
+        
+        This method checks if the content is a valid image using isImageFile.
+        If valid, it runs model prediction and returns the prediction output.
+        
+        Returns:
+            YOLO model prediction output for the given image content.
         """
         # in predict method you can pass an image either PIL object or image path or simply numpy array
         # im choosing isimagefile since it handles error expections
@@ -94,10 +103,26 @@ class ImageData:
             return model
     @property
     def objNames(self):
+        """Gets the object class names from the model prediction.
+        
+        This returns the list of class names the model can detect, obtained 
+        from the model prediction output.
+        
+        Returns:
+            list: The list of object class names detected by the model.
+        """
         return self.predict[0].names
     
     @property
     def boxes(self): # in detetction segmention and keypoints boxes value will be present 
+        """Gets bounding box coordinates predicted by model.
+        
+        This method extracts the bounding box coordinates from the model prediction output.
+        It returns a CSV response containing the coordinates and confidence for each detected object.
+        
+        Returns:
+            Response: StreamingResponse returning a CSV with bounding box info.
+        """
         Boxes = self.predict[0].boxes
         if Boxes is None:
             return {
@@ -116,6 +141,15 @@ class ImageData:
             )
     @property
     def keypoints(self): # if pose is called it will display persons keypoints note : it is only trained on person
+        """Gets keypoints predicted by model.
+        
+        This method extracts the keypoints from the model prediction output.
+        It returns a CSV response containing the coordinates and visibility 
+        for each detected keypoint per object instance.
+        
+        Returns:
+            Response: StreamingResponse returning a CSV with keypoint info.
+        """
         key = self.predict[0].keypoints
         if key is None:
             return {
@@ -153,6 +187,7 @@ class ImageData:
             return {
                 'response' : 'mask value is null cant fetch csv'
             }
+        
     @property 
     def imgCrop(self): 
         """Crops detected objects from image.
@@ -172,10 +207,11 @@ class ImageData:
         boxes = model.boxes.data.numpy()
         objs,cols = boxes.shape
         for obj in range(objs):
-            xmin,ymin,xmax,ymax,confi,clas = boxes[obj]
+            xmin,ymin,xmax,ymax,confi,clas = boxes
             crop = self.isImageFile[1].crop((xmin,ymin,xmax,ymax))
             images[names[clas]].append(crop)
         return images
+    
     @property
     def inImageObjects(self):
         """
@@ -185,15 +221,9 @@ class ImageData:
         count = Counter(objs)
         count_str = { self.objNames[name]:value for name,value in count.items()}
         return count_str
+        
  
-class responsePayload(ImageData):
-
-    """
-    sending files from an end point 
-    since we process variety of data formats on image for example,
-    sending processed image for bounding box ,mask,key ,obb or any sort of data 
-    
-    """
+class responsePayload(ImageData): # 
     
     def  __init__(self, content: str | BytesIO,
                    model: str | Path = 'yolov8n.pt', 
@@ -202,6 +232,12 @@ class responsePayload(ImageData):
     
     @property
     def send_processed_img(self):
+        """Sends the processed image as a response.
+        
+        Converts the model plot to RGB, saves it to a BytesIO object, 
+        seeks to start, and returns a StreamingResponse containing the image bytes 
+        and appropriate media type.
+        """
         model = self.predict[0]
         _ , img = self.isImageFile
         Imgformat = img.format
@@ -217,4 +253,4 @@ class responsePayload(ImageData):
         pass
     @property
     def json_response(self):
-        pass
+        pass 
