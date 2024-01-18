@@ -8,7 +8,7 @@ from ultralytics import YOLO
 import cv2
 import os
 import pandas as pd# Imports the pandas library for working with data frames
-from collections import defaultdict
+from collections import defaultdict,Counter
 
 class YoloPath:
     """Initializes YoloPath with default vision task and trained variant.
@@ -172,11 +172,19 @@ class ImageData:
         boxes = model.boxes.data.numpy()
         objs,cols = boxes.shape
         for obj in range(objs):
-            xmin,ymin,xmax,ymax,confi,clas = boxes
+            xmin,ymin,xmax,ymax,confi,clas = boxes[obj]
             crop = self.isImageFile[1].crop((xmin,ymin,xmax,ymax))
             images[names[clas]].append(crop)
         return images
-        
+    @property
+    def inImageObjects(self):
+        """
+        returns the number of objects detected in the image
+        """
+        objs = self.predict[0].boxes.data.numpy()[:,-1].tolist()
+        count = Counter(objs)
+        count_str = { self.objNames[name]:value for name,value in count.items()}
+        return count_str
  
 class responsePayload(ImageData):
 

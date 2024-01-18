@@ -70,3 +70,45 @@ async def boxes(task:str='pose',
     model = YoloPath(task,variant).getpath
     result = responsePayload(content,model).keypoints
     return result
+
+@app.post("/object/info")
+async def boxes(task:str='pose',
+                variant:str='n',
+                file:UploadFile=File(...)):
+    content = BytesIO( await file.read())
+    model = YoloPath(task,variant).getpath
+    result = responsePayload(content,model).imgCrop
+    return {key : len(value) for key,value in result.items()}
+
+@app.post("/countObjects")
+async def boxes(task:str='pose',
+                variant:str='n',
+                file:UploadFile=File(...)):
+    content = BytesIO(await file.read())
+    model = YoloPath(task,variant).getpath
+    result = responsePayload(content,model).inImageObjects
+    return result
+
+@app.post("/show/cropped/{person}/{nthImage}")
+async def boxes(objectName:str,
+                nthImage:int,
+                task:str='pose',
+                variant:str='n',
+                file:UploadFile=File(...)):
+    content = BytesIO(await file.read())
+    model = YoloPath(task,variant).getpath
+    Imgformat = responsePayload(content,model).isImageFile[1].format
+    crop = responsePayload(content,model).imgCrop
+    objs_in_pic = list(crop.keys())
+    name = objectName
+    nthobj = nthImage
+    if name in objs_in_pic:
+        images = crop[name]
+        no_of_images = len(images)
+        if 0<= nthobj <= no_of_images:
+            result = images[nthobj]
+        else : 
+            result = {'response : ':f'there is no {nthobj} object in the {name} please provide the number from 0 to {no_of_images}'}
+    else :
+        result = {'response : ':f'theres no {name} in the uploaded image please try to provide the names from {objs_in_pic}'}
+    return result
