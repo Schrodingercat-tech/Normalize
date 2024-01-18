@@ -207,7 +207,7 @@ class ImageData:
         boxes = model.boxes.data.numpy()
         objs,cols = boxes.shape
         for obj in range(objs):
-            xmin,ymin,xmax,ymax,confi,clas = boxes
+            xmin,ymin,xmax,ymax,confi,clas = boxes[obj]
             crop = self.isImageFile[1].crop((xmin,ymin,xmax,ymax))
             images[names[clas]].append(crop)
         return images
@@ -221,6 +221,26 @@ class ImageData:
         count = Counter(objs)
         count_str = { self.objNames[name]:value for name,value in count.items()}
         return count_str
+    
+    def getCropObj(self,objName:str,objIndex:int):
+        """
+        returns the cropped object image
+        """
+        found_objs = self.inImageObjects
+        objs_in_img = list(found_objs.keys())
+        obj_count_in_img = int(found_objs[objName])
+        if objName in objs_in_img:
+            if 0<=objIndex<=found_objs[objName]:
+                return self.imgCrop[objName][objIndex]
+            else : return {'response' : f'either passed invalid index or out of range',
+                           'object_count' : obj_count_in_img
+                           }
+        else : return {'response' : f'there are no objects in the image with name {objName}\
+                        or not detected by the system\
+                        please do check the keywords in the following {objs_in_img}',
+                       'detected_objects_in_image' : objs_in_img
+                       }
+        
         
  
 class responsePayload(ImageData): # 

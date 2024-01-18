@@ -6,6 +6,7 @@ from io import BytesIO,StringIO
 import cv2
 from ImgHandle import responsePayload,YoloPath
 import pandas as pd
+from PIL import Image
 
 app = FastAPI()
 
@@ -89,26 +90,18 @@ async def boxes(task:str='pose',
     result = responsePayload(content,model).inImageObjects
     return result
 
-@app.post("/show/cropped/{person}/{nthImage}")
-async def boxes(objectName:str,
-                nthImage:int,
-                task:str='pose',
+@app.post("/show/cropped")
+async def boxes(objname:str,
+                objindex:int,
+                task:str='det',
                 variant:str='n',
                 file:UploadFile=File(...)):
     content = BytesIO(await file.read())
     model = YoloPath(task,variant).getpath
-    Imgformat = responsePayload(content,model).isImageFile[1].format
-    crop = responsePayload(content,model).imgCrop
-    objs_in_pic = list(crop.keys())
-    name = objectName
-    nthobj = nthImage
-    if name in objs_in_pic:
-        images = crop[name]
-        no_of_images = len(images)
-        if 0<= nthobj <= no_of_images:
-            result = images[nthobj]
-        else : 
-            result = {'response : ':f'there is no {nthobj} object in the {name} please provide the number from 0 to {no_of_images}'}
-    else :
-        result = {'response : ':f'theres no {name} in the uploaded image please try to provide the names from {objs_in_pic}'}
-    return result
+    crop = responsePayload(content,model).getCropObj(objname,objindex)
+    imgarr = np.asarray(crop)
+    bytesio = BytesIO()
+    Image.fromarray(imgarr).save(bytesio,format='JPEG')
+    bytesio.seek(0)
+    return StreamingResponse(bytesio,media_type='image/jpeg')
+    
