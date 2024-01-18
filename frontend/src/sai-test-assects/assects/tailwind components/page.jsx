@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Dialog } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
+import ImageAndTextExample from './card'
 
 const navigation = [
   { name: 'Product', href: '#' },
@@ -121,12 +122,17 @@ export function Example() {
             </div>
           </div>
           <div className="text-center">
+          <ImageAndTextExample/>
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-              Data to enrich your online business
+              Normalize
             </h1>
             <p className="mt-6 text-lg leading-8 text-gray-600">
-              Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo. Elit sunt amet
-              fugiat veniam occaecat fugiat aliqua.
+            Normalize is a user-friendly application designed to address real-world challenges seamlessly,
+            prioritizing simplicity without compromising functionality. 
+            Our goal is to provide solutions to everyday problems with an intuitive interface that eliminates unnecessary complexities. 
+            By focusing on user experience and accessibility, Normalize empowers individuals to effortlessly navigate and solve issues, 
+            making the application an indispensable tool for streamlining daily tasks. Experience the power of simplicity with Normalize, 
+            where solving real-world problems becomes a hassle-free and enjoyable experience.
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <a

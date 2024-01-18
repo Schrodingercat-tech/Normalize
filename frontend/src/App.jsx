@@ -1,11 +1,10 @@
-// import {CroppedImage} from "./sai-test-assects/home";
-// const img = '/public/images/girl.jpg'
-import { Example } from "./sai-test-assects/assects/tailwind components/page";
-
+import { ImageCard } from "./Components/ImageCard";
+//import ImageAndTextExample from "./sai-test-assects/assects/tailwind components/card";
 function App() {
   return (
     <div className="cropped-container">
-    <Example />
+    <h1> Normalize</h1>
+    <ImageCard />
     </div>
   );
 }
