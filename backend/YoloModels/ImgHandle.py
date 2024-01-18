@@ -8,6 +8,7 @@ from ultralytics import YOLO
 import cv2
 import os
 import pandas as pd# Imports the pandas library for working with data frames
+from collections import defaultdict
 
 class YoloPath:
     """Initializes YoloPath with default vision task and trained variant.
@@ -152,6 +153,29 @@ class ImageData:
             return {
                 'response' : 'mask value is null cant fetch csv'
             }
+    @property 
+    def imgCrop(self): 
+        """Crops detected objects from image.
+
+        This method crops the detected objects from the input image using 
+        the bounding box coordinates predicted by the model. It returns
+        a dictionary with the object names as keys and a list of cropped 
+        images containing each detected instance of that object.
+
+        The bounding box coordinates are extracted from model.boxes and
+        used to crop the region from the input image. The cropped images
+        are appended to lists grouped by the object name/class.
+        """
+        images = defaultdict(list)
+        model = self.predict[0]
+        names = self.objNames
+        boxes = model.boxes.data.numpy()
+        objs,cols = boxes.shape
+        for obj in range(objs):
+            xmin,ymin,xmax,ymax,confi,clas = boxes
+            crop = self.isImageFile[1].crop((xmin,ymin,xmax,ymax))
+            images[names[clas]].append(crop)
+        return images
         
  
 class responsePayload(ImageData):
