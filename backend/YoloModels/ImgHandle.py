@@ -10,7 +10,7 @@ import os
 import pandas as pd
 from collections import defaultdict
 
-class YoloPath:
+class YoloPath: # code update
     """Initializes YoloPath class to handle YOLOv8 model paths.
     
     The YoloPath class provides methods to generate the path to different 
