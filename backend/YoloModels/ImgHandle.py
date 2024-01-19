@@ -129,7 +129,7 @@ class ImageData:
                 'response' : 'boxes value is null cant fetch csv'
             }
         else :
-            Boxes = Boxes.numpy().data
+            Boxes = Boxes.cpu().numpy().data
             headers = ['Xmin','Ymin','Xmax','Ymax','Confidence','Name']
             df = pd.DataFrame(Boxes,columns=headers)
             df['Name'] = df['Name'].map(dict(self.objNames))
@@ -157,7 +157,7 @@ class ImageData:
             }
         else:
             headers = ['Object', 'X', 'Y', 'Visibility']
-            key = key.data.numpy()
+            key = key.cpu().data.numpy()
             data = []
             for i, k in enumerate(key):
                 df = pd.DataFrame(k, columns=headers[1:])
@@ -217,7 +217,7 @@ class ImageData:
         """
         returns the number of objects detected in the image
         """
-        objs = self.predict[0].boxes.data.numpy()[:,-1].tolist()
+        objs = self.predict[0].boxes.cpu().data.numpy()[:,-1].tolist()
         count = Counter(objs)
         count_str = { self.objNames[name]:value for name,value in count.items()}
         return count_str
