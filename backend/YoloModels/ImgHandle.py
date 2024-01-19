@@ -207,7 +207,7 @@ class ImageData:
         boxes = model.boxes.data.numpy()
         objs,cols = boxes.shape
         for obj in range(objs):
-            xmin,ymin,xmax,ymax,confi,clas = boxes
+            xmin,ymin,xmax,ymax,confi,clas = boxes[obj]
             crop = self.isImageFile[1].crop((xmin,ymin,xmax,ymax))
             images[names[clas]].append(crop)
         return images
