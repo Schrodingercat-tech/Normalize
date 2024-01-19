@@ -6,6 +6,7 @@ from io import BytesIO,StringIO
 import cv2
 from ImgHandle import responsePayload,YoloPath
 import pandas as pd
+from PIL import Image
 
 app = FastAPI()
 

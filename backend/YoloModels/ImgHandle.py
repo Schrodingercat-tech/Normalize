@@ -21,7 +21,6 @@ class YoloPath: # code update
     Attributes:
         task (str): The vision task (detection, segmentation, etc). Defaults to 'det'.
         variant (str): The model variant (nano, small, etc.). Defaults to 'n'.
-    
     """
     def __init__(self,
                  visionTask: str = 'det', 
@@ -204,7 +203,7 @@ class ImageData:
         images = defaultdict(list)
         model = self.predict[0]
         names = self.objNames
-        boxes = model.boxes.data.numpy()
+        boxes = model.boxes.cpu().data.numpy()
         objs,cols = boxes.shape
         for obj in range(objs):
             xmin,ymin,xmax,ymax,confi,clas = boxes[obj]
