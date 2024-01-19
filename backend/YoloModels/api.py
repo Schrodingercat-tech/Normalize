@@ -90,7 +90,7 @@ async def boxes(task:str='pose',
     result = responsePayload(content,model).inImageObjects
     return result
 
-@app.post("/show/cropped")
+@app.post("/show/cropped") # modified
 async def boxes(objname:str,
                 objindex:int,
                 task:str='det',
@@ -104,4 +104,6 @@ async def boxes(objname:str,
     Image.fromarray(imgarr).save(bytesio,format='JPEG')
     bytesio.seek(0)
     return StreamingResponse(bytesio,media_type='image/jpeg')
+
+
     
