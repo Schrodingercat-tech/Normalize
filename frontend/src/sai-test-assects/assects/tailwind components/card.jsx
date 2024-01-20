@@ -1,5 +1,6 @@
 import Card from 'react-bootstrap/Card';
 
+
 const styles = {
     'color' : 'red',
     'opacity' : '0.5',

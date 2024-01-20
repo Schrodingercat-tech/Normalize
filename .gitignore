@@ -1,6 +1,8 @@
 *.pt
-backend/YoloModels/__pycache__
+*__pycache__
 backend/assects
-frontend\node_modules
+node_modules
 *.pytest_cache
 *.vscode
+images_accc0afed3f94754a0d2404079ccdf29
+HTML File-526824f26ca24b379e12362cddd75d17
