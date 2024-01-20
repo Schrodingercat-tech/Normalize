@@ -4,7 +4,7 @@ from collections import defaultdict
 import uuid
 import os
 
-class Scrape:
+class Scrape: #
     def __init__(self, url):
         self.headers = {
             'User-Agent': 'Mozilla/5.0(windows NT 10.0; Win64; x64; rv:84.0) Gecko/20100101 Firefox/84.0',
