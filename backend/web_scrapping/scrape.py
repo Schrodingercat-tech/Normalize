@@ -90,7 +90,9 @@ class Scrape: #
             print(e)
             
 
-    def pullImages(self, folder_loc=None):
+    def pullImages(self, 
+                   folder_loc=None,
+                   Src:str='src'):
         """Pulls all images from the HTML content and saves them to a folder.
         
         This method finds all <img> tags in the HTML content, gets the image 
@@ -106,10 +108,10 @@ class Scrape: #
         if folder_loc is None:
             folder_loc = f'images_{uuid.uuid4().hex}'
             os.makedirs(folder_loc)
-
+        # from what i have observed many websites have either stored in src or data-srcset or 
         for src in images:
             try:
-                source = src['src']
+                source = src[Src]
                 binary_data = requests.get(source).content
                 file_format = self.get_file_fromBinary(binary_data)
                 unique_filename = f'{uuid.uuid4().hex}.{file_format.lower()}'
