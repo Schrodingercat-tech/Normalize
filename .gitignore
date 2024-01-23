@@ -4,3 +4,4 @@ backend/assects
 frontend\node_modules
 *.pytest_cache
 *.vscode
+web_scrapping
