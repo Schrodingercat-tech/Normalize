@@ -21,6 +21,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 @app.post("/image")
 async def send_img(task:str='det',variant:str='n', file: UploadFile = File(...)):
     contents = await file.read()
@@ -44,6 +45,7 @@ data = {
 
 @app.get("/")
 async def working():
+    print("API running on 8000")
     return {'hi' : 'this api is working'}
 
 @app.get("/csv")
@@ -104,6 +106,9 @@ async def boxes(objname:str,
     Image.fromarray(imgarr).save(bytesio,format='JPEG')
     bytesio.seek(0)
     return StreamingResponse(bytesio,media_type='image/jpeg')
+<<<<<<< HEAD
 
 
     
+=======
+>>>>>>> 09a5dd25e05c447568861c45b4d174995d2eadc2

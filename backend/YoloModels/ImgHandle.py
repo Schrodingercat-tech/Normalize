@@ -21,7 +21,6 @@ class YoloPath: # code update
     Attributes:
         task (str): The vision task (detection, segmentation, etc). Defaults to 'det'.
         variant (str): The model variant (nano, small, etc.). Defaults to 'n'.
-    
     """
     def __init__(self,
                  visionTask: str = 'det', 
@@ -129,7 +128,7 @@ class ImageData:
                 'response' : 'boxes value is null cant fetch csv'
             }
         else :
-            Boxes = Boxes.numpy().data
+            Boxes = Boxes.cpu().numpy().data
             headers = ['Xmin','Ymin','Xmax','Ymax','Confidence','Name']
             df = pd.DataFrame(Boxes,columns=headers)
             df['Name'] = df['Name'].map(dict(self.objNames))
@@ -157,7 +156,7 @@ class ImageData:
             }
         else:
             headers = ['Object', 'X', 'Y', 'Visibility']
-            key = key.data.numpy()
+            key = key.cpu().data.numpy()
             data = []
             for i, k in enumerate(key):
                 df = pd.DataFrame(k, columns=headers[1:])
@@ -204,7 +203,7 @@ class ImageData:
         images = defaultdict(list)
         model = self.predict[0]
         names = self.objNames
-        boxes = model.boxes.data.numpy()
+        boxes = model.boxes.cpu().data.numpy()
         objs,cols = boxes.shape
         for obj in range(objs):
             xmin,ymin,xmax,ymax,confi,clas = boxes[obj]
@@ -217,7 +216,7 @@ class ImageData:
         """
         returns the number of objects detected in the image
         """
-        objs = self.predict[0].boxes.data.numpy()[:,-1].tolist()
+        objs = self.predict[0].boxes.cpu().data.numpy()[:,-1].tolist()
         count = Counter(objs)
         count_str = { self.objNames[name]:value for name,value in count.items()}
         return count_str
@@ -241,6 +240,25 @@ class ImageData:
                        'detected_objects_in_image' : objs_in_img
                        }
         
+        
+    def getCropObj(self,objName:str,objIndex:int):
+        """
+        returns the cropped object image
+        """
+        found_objs = self.inImageObjects
+        objs_in_img = list(found_objs.keys())
+        obj_count_in_img = int(found_objs[objName])
+        if objName in objs_in_img:
+            if 0<=objIndex<=found_objs[objName]:
+                return self.imgCrop[objName][objIndex]
+            else : return {'response' : f'either passed invalid index or out of range',
+                           'object_count' : obj_count_in_img
+                           }
+        else : return {'response' : f'there are no objects in the image with name {objName}\
+                        or not detected by the system\
+                        please do check the keywords in the following {objs_in_img}',
+                       'detected_objects_in_image' : objs_in_img
+                       }
         
  
 class responsePayload(ImageData): # 
