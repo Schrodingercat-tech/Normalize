@@ -9,7 +9,7 @@ import {
   
 export function UploadPredict() {
   return (
-    <div className="flex w-full items-center space-x-1">
+    <div className="flex  items-center space-x-1">
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger>
@@ -26,7 +26,7 @@ export function UploadPredict() {
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger>
-            <Button>Predict</Button>
+            <Button className=''>Predict</Button>
           </TooltipTrigger>
 
           <TooltipContent className="p-3">

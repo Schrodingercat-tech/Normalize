@@ -14,7 +14,7 @@ export function ResizableDemo({
   page3: React.ReactNode;
 }) {
   return (
-    <div className="h-[600px] overflow-hidden">
+    <div className="h-[70vh] overflow-hidden">
       <ResizablePanelGroup
         direction="horizontal"
         className="h-[80px] w-full rounded-lg border"
@@ -29,7 +29,7 @@ export function ResizableDemo({
           </div>
         </ResizablePanel>
         <ResizableHandle />
-        <ResizablePanel defaultSize={70}>
+        <ResizablePanel defaultSize={55}>
           <ResizablePanelGroup direction="vertical">
             <ResizablePanel defaultSize={50}>
               <div className="flex h-full items-center justify-center p-1">

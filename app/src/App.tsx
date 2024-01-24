@@ -13,7 +13,7 @@ const Imgcontent = () => {
       <ImageCard
         children={
           <h1>
-            Norma : Vision Transformers @__sAi__
+            Norma : Vision Transformers @__sAi__*2@hArshA
             <></>
           </h1>
         }

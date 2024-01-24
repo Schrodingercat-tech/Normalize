@@ -19,6 +19,7 @@ import {
 // import { CheckboxDemo } from "./check box"
 import { UploadPredict } from "./upload & predict"
 import { VisionBar } from "./vision bar"
+import { DataTableDemo } from "./data_table"
 //import { InputFile } from "./select file"
 
 //import image from '/images/fc41d371ceee48d3abb43750bdfdc0c6.jpeg'
@@ -30,12 +31,12 @@ export function TabsDemo({VisionTab}:{VisionTab: React.ReactNode;}
   return (
     <Tabs defaultValue="account" className="w-[100%]">
       <TabsList className="grid w-full grid-cols-3">
-        <TabsTrigger value="account">Computer Vision</TabsTrigger>
-        <TabsTrigger value="password">Vision Data</TabsTrigger>
+        <TabsTrigger value="cv">Computer Vision</TabsTrigger>
+        <TabsTrigger value="data">Vision Data</TabsTrigger>
         <TabsTrigger value="graph">Vision Graph</TabsTrigger>
       </TabsList>
 
-      <TabsContent value="account" >
+      <TabsContent value="cv" >
         
         <Card>
           
@@ -56,7 +57,7 @@ export function TabsDemo({VisionTab}:{VisionTab: React.ReactNode;}
           </CardHeader>
           
           <CardFooter>
-            <div className="flex w-full gap-2">
+            <div className="grid grid-cols-2">
               <UploadPredict/>
               <VisionBar/>
             </div>
@@ -64,9 +65,10 @@ export function TabsDemo({VisionTab}:{VisionTab: React.ReactNode;}
           </CardFooter>
         </Card>
       </TabsContent>
-      <TabsContent value="password">
+      <TabsContent value="data">
         <Card>
           <CardHeader>
+            <DataTableDemo/>
             <CardTitle>Password</CardTitle>
             <CardDescription>
               Change your password here. After saving, you'll be logged out.
