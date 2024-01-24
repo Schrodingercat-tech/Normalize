@@ -15,20 +15,18 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs"
+// import { InputFile } from "./upload file"
+// import { CheckboxDemo } from "./check box"
+import { UploadPredict } from "./upload & predict"
+import { VisionBar } from "./vision bar"
 //import { InputFile } from "./select file"
 
 //import image from '/images/fc41d371ceee48d3abb43750bdfdc0c6.jpeg'
 // import { AspectRatio } from "@radix-ui/react-aspect-ratio"
 
-const Vision=()=>{
-  return(
-    <div className="flex sapce-x-2">
-      
-    </div>
-  );
-}
 
-export function TabsDemo() {
+export function TabsDemo({VisionTab}:{VisionTab: React.ReactNode;}
+) {
   return (
     <Tabs defaultValue="account" className="w-[100%]">
       <TabsList className="grid w-full grid-cols-3">
@@ -53,25 +51,16 @@ export function TabsDemo() {
               object detection
               pose detection
             </CardDescription>
-            <Card className="h-[500px] w-[100%]">
-              <Vision/>
-              
-            </Card>
+            {VisionTab}
             
           </CardHeader>
           
-          <CardContent className="space-y-1">
-            <div className="space-y-1">
-              <Label htmlFor="name">Name</Label>
-              <Input id="name" defaultValue="Pedro Duarte" />
-            </div>
-            <div className="space-y-1">
-              <Label htmlFor="username">Username</Label>
-              <Input id="username" defaultValue="@peduarte" />
-            </div>
-          </CardContent>
           <CardFooter>
-            <Button>Save changes</Button>
+            <div className="flex w-full gap-2">
+              <UploadPredict/>
+              <VisionBar/>
+            </div>
+            
           </CardFooter>
         </Card>
       </TabsContent>
